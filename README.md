@@ -59,7 +59,7 @@ The final evaluation on the test set showed an accuracy of 94.54%. The model per
 3. Run the application:
 
    ```bash
-   python main.py
+   python app.py
 
 ## Contributors
 
