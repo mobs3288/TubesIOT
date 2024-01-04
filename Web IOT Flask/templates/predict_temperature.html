@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict Temperature</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- <script>
+        $(document).ready(function () {
+            function updatePrediction() {
+                // Use AJAX to send a request to the server
+                $.ajax({
+                    type: 'GET',
+                    url: '/get_prediction',
+                    dataType: 'json',
+                    success: function (response) {
+                        // Map cluster index to weather label
+                        var weatherLabels = ['Sunshine', 'Cloudy', 'Windy', 'Rainfall', 'Undefined'];
+                        var weatherPrediction = weatherLabels[response.weather_prediction[0]];
+                        var weatherImageUrls = {
+                            'Sunshine': '1530392_weather_sun_sunny_temperature_icon.png',
+                            'Cloudy': '1530391_weather_clouds_sun_sunny_icon.png',
+                            'Windy': '1530361_weather_cloudy_storm_wind_windy_icon.png',
+                            'Rainfall': '1530364_weather_rain_shower_storm_icon.png',
+                            'Undefined': '9022110_alien_duotone_icon.png'
+                        };
+
+                        // Update the content with the new prediction and sensor data
+                        $('#temperature_prediction').text(response.temperature_prediction[0] + ' °C');
+                        $('#weather_prediction').text(weatherPrediction);
+
+                        $('#temperature').text('Temperature: ' + response.sensor_data.temperature + ' °C');
+                        $('#humidity').text('Humidity: ' + response.sensor_data.humidity + '%');
+                        $('#light_hour').text('Light Hour: ' + response.sensor_data.light_hour + ' hours');
+                        $('#raindrop').text('Raindrop: ' + response.sensor_data.raindrop);
+                        
+                        $('#weather_image').attr('src', 'static/' + 'images/' + weatherImageUrls[weatherPrediction]);
+                    }
+                });
+            }
+
+            // Update the prediction every 5 seconds
+            setInterval(updatePrediction, 5000);
+
+            // Initial update when the page loads
+            updatePrediction();
+        });
+    </script> -->
+    <script>
+        $(document).ready(function () {
+            function updatePrediction() {
+                // Dummy data for development
+                var dummyResponse = {
+                    temperature_prediction: [25.5],
+                    weather_prediction: [4],
+                    sensor_data: {
+                        temperature: 23.8,
+                        humidity: 60,
+                        light_hour: 10,
+                        raindrop: 'No'
+                    }
+                };
+    
+                // Map cluster index to weather label
+                var weatherLabels = ['Sunshine', 'Cloudy', 'Windy', 'Rainfall', 'Undefined'];
+                var weatherPrediction = weatherLabels[dummyResponse.weather_prediction[0]];
+                var weatherImageUrls = {
+                    'Sunshine': '1530392_weather_sun_sunny_temperature_icon.png',
+                    'Cloudy': '1530391_weather_clouds_sun_sunny_icon.png',
+                    'Windy': '1530361_weather_cloudy_storm_wind_windy_icon.png',
+                    'Rainfall': '1530364_weather_rain_shower_storm_icon.png',
+                    'Undefined': '9022110_alien_duotone_icon.png'
+                };
+    
+                // Update the content with the dummy prediction and sensor data
+                $('#temperature_prediction').text(dummyResponse.temperature_prediction[0] + ' °C');
+                $('#weather_prediction').text(weatherPrediction);
+    
+                $('#temperature').text(dummyResponse.sensor_data.temperature + ' °C');
+                $('#humidity').text(dummyResponse.sensor_data.humidity + '%');
+                $('#light_hour').text(dummyResponse.sensor_data.light_hour + ' hours');
+                $('#raindrop').text(dummyResponse.sensor_data.raindrop);
+
+                $('#weather_image').attr('src', weatherImageUrls[weatherPrediction]);
+            }
+    
+            // Update the prediction every 5 seconds
+            setInterval(updatePrediction, 5000);
+    
+            // Initial update when the page loads
+            updatePrediction();
+        });
+    </script>
+    <style>
+        .data-card {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .data-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .data-label {
+            font-weight: bold;
+        }
+
+        .text-enlarge:hover {
+            transform: scale(1.05); /* Adjust the scaling factor as needed */
+            transition: transform 0.2s ease-in-out; /* Add a smooth transition effect */
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 h-screen flex items-center justify-center">
+    <div class="bg-white p-8 rounded shadow-md flex flex-col items-center gap-8">
+        <!-- Centered Prediction Section -->
+        <div class="flex flex-col items-center">
+            <div id="weather-prediction-section" class="text-center">
+                <h2 class="text-lg font-bold mb-2">Weather Prediction</h2>
+                <img id="weather_image" class="mb-2" src="" alt="Weather Image" style="width: 150px; height: 150px; max-width: 100%; max-height: 100%;">
+                <p id="weather_prediction" class="text-lg mb-2 text-enlarge"></p>
+            </div>            
+        
+            <div id="temperature-prediction-section" class="text-center">
+                <h2 class="text-lg font-bold mb-2">Temperature Prediction</h2>
+                <p id="temperature_prediction" class="text-lg mb-2 text-enlarge"></p>
+            </div>
+        </div>
+
+        <!-- Bottom Row: Current Data Section -->
+        <div class="col-span-2">
+            <h2 class="text-lg font-bold mb-2 text-center">Current Data</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="data-card">
+                    <p class="data-label">Temperature</p>
+                    <p id="temperature" class="text-lg mb-2"></p>
+                </div>
+                <div class="data-card">
+                    <p class="data-label">Humidity</p>
+                    <p id="humidity" class="text-lg mb-2"></p>
+                </div>
+                <div class="data-card">
+                    <p class="data-label">Light Hour</p>
+                    <p id="light_hour" class="text-lg mb-2"></p>
+                </div>
+                <div class="data-card">
+                    <p class="data-label">Raindrop</p>
+                    <p id="raindrop" class="text-lg mb-2"></p>
+                </div>
+            </div>
+        </div>        
+    </div>
+</body>
+
+</html>
